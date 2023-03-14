@@ -14,14 +14,15 @@
 		"5000": {
 			"label": "Hello Remote World",
 			"onAutoForward": "notify"
-		},
-		"5001": {
-			"protocol": "https"
 		}
+	//	"5001": {
+	//		"protocol": "https"
+	//	}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5000, 5001],
+	//"forwardPorts": [5000, 5001],
+	"forwardPorts": [5000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "dotnet restore"
