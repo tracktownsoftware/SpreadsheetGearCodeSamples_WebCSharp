@@ -1,0 +1,238 @@
+﻿@*
+  Copyright © SpreadsheetGear LLC. All Rights Reserved.
+  SpreadsheetGear® is a registered trademark of SpreadsheetGear LLC.
+*@
+
+@page
+@model IndexModel
+@using Microsoft.AspNetCore.Html
+
+@{ 
+  Func<CategoryDTO, IHtmlContent> RenderCategory = null;
+  RenderCategory =
+    @<li>
+      <span class="category-info fa-li text-nowrap">
+        <span class="folder-status-icon" style="cursor: pointer; user-select: none;"><i class="fa-fw fas fa-caret-down"></i></span>
+        <span class="folder-icon"><i class="fa-fw fas fa-folder-open"></i></span>
+      </span>
+      <a href="javascript:void(0);" class="ml-3 category-link font-weight-bold" data-category-name="@item.Name">@item.Name</a>
+      <div class="children">
+        @if (item.SampleNames.Any())
+        {
+          <ul class="samples-list">
+            @foreach (var name in item.SampleNames)
+            {
+              <li>
+                <a href="javascript:void(0);" class="sample-link" data-sample-name="@name">@name</a>
+              </li>
+            }
+          </ul>
+        }
+        @if (item.ChildCategories.Any())
+        {
+          <ul class="fa-ul">
+            @foreach (var childCategory in item.ChildCategories)
+            {
+              @RenderCategory(childCategory)
+            }
+          </ul>
+        }
+      </div>
+    </li>;
+}
+
+<div class="d-flex align-items-stretch h-100">
+
+  @* Samples Tree View *@
+  <div class="p-1 flex-fill d-flex flex-column" style="min-width: 350px; max-width: 350px; background-color: #eee;">
+    <div class="py-1 text-right">
+      <button class="link-expand-all sg-btn sg-btn-small sg-btn-blue"><i class="fa-fw fas fa-chevron-down"></i> Expand All</button>
+      <button class="link-collapse-all sg-btn sg-btn-small sg-btn-blue"><i class="fa-fw fas fa-chevron-up"></i> Collapse All</button>
+    </div>
+    <div id="samples-tree-container" class="flex-fill overflow-auto">
+      <ul class="fa-ul samples-tree">
+        @foreach (CategoryDTO category in Model.CategoryRoot.ChildCategories)
+        {
+          @RenderCategory(category)
+        }
+      </ul>
+    </div>
+  </div>
+
+  @* Sample / Summary Container *@
+  <div class="d-flex flex-fill flex-column p-2" style="background-color: #ddd;">
+    @* Sample Container *@
+    <div id="sample-container" class="h-100 flex-column flex-fill d-none">
+      <div class="row">
+        <div class="col">
+          <span class="sample-title-container"><span id="sample-name"></span> - </span>
+          <span id="sample-description"></span>
+        </div>
+      </div>
+
+      @* Buttons *@
+
+      <div class="row">
+        <div class="col pl-4 py-2">
+          <span class="can-download-file"><a href="javascript:void(0);" id="button-run-sample-download" class="sg-btn sg-btn-small sg-btn-red"><i class="fas fa-file-download"></i> Download Excel File</a></span>
+@*          <span class="can-render-image"><a href="javascript:void(0);" id="button-run-sample-render" class="sg-btn sg-btn-small sg-btn-blue"><i class="fas fa-camera"></i> Render Image</a><sup data-toggle="tooltip" data-trigger="click hover" data-html="true" data-custom-class="tooltip-lg" class="cursor-pointer" title="<div style='font-size:0.9em;' class='text-left'><div>Execution of this sample utilizes <b>SpreadsheetGear Engine for .NET</b> APIs only.  However, image rendering of the sample's results is provided by the <span class='text-monospace'>SpreadsheetGear.Drawing.Image</span> class, which is part of the <b>SpreadsheetGear for Windows</b> product.</div><div class='mt-2'>You can find a full list of differences between <b>SpreadsheetGear Engine for .NET</b> and <b>SpreadsheetGear for Windows</b> from the <b><a href='https://www.spreadsheetgear.com/Products/Compare' target='_blank'>Comparison page</a></b>.</div><div class='mt-2'>See <b><a href='https://www.spreadsheetgear.com/Support/Samples/RazorPages/Category/Imaging' target='_blank'>Razor Page Samples - Excel Chart and Range Imaging</a></b> for more samples demonstrating the SpreadsheetGear.Drawing.Image class.</div></div>"><i class="fas fa-info-circle"></i></sup></span>
+*@        </div>
+      </div>
+
+      @* Source Code Tabs *@
+      <div id="source-code-tabs" class="pb-3 h-100 d-flex flex-column" style="min-height: 0;">
+        <ul class="nav nav-tabs" role="tablist"></ul>
+        <div class="tab-content flex-fill overflow-auto"></div>
+      </div>
+    </div>
+
+    @* Summary Container *@
+    <div id="summary-container" class="flex-fill overflow-auto d-none"></div>
+  </div>
+</div>
+
+
+@section Scripts {
+<script>
+  var currentSampleInfo = null;
+  function loadSample(sampleName) {
+    let url = "@Html.Raw(Url.Page(null, "LoadSample", new { sampleName = "SAMPLENAMEPLACEHOLDER" }))";
+    url = url.replace("SAMPLENAMEPLACEHOLDER", sampleName);
+    $.ajax({
+      url: url,
+      success: function (sampleInfo) {
+        currentSampleInfo = sampleInfo;
+        document.title = "SpreadsheetGear Web Explorer - " + currentSampleInfo.name;
+        $("#sample-name").html(sampleInfo.name);
+        $("#sample-description").html(sampleInfo.description);
+        $(".can-download-file").toggle(sampleInfo.canDownloadFile);
+        $(".can-render-image").toggle(sampleInfo.canRenderImage);
+
+        clearTabs();
+        for (var i = 0; i < sampleInfo.sourceCodes.length; i++) {
+          let sourceCodeItem = sampleInfo.sourceCodes[i];
+          addSourceCodeTab(sourceCodeItem);
+          Prism.highlightAll();
+        }
+        $("#summary-container").addClass("d-none");
+        $("#sample-container").removeClass("d-none");
+        $("#sample-container").addClass("d-flex");
+      },
+      error: function (data) {
+        window.alert("Error loading sample. ('" + data.responseText + "')");
+      }
+    });
+  }
+
+  function runCurrentSample() {
+    if (currentSampleInfo != null) {
+      let url = "@Html.Raw(Url.Page(null, "RunSampleDownloadFile", new { sampleName = "SAMPLENAMEPLACEHOLDER" }))";
+      url = url.replace("SAMPLENAMEPLACEHOLDER", currentSampleInfo.name);
+      let link = document.createElement("a");
+      link.href = url;
+      link.click();
+    }
+  }
+
+  function clearTabs() {
+    $("#source-code-tabs ul.nav-tabs").children().remove();
+    $("#source-code-tabs div.tab-content").children().remove();
+  }
+
+  function addSourceCodeTab(sourceCodeItem) {
+    let $navTabs = $("#source-code-tabs ul.nav-tabs");
+    let $navContent = $("#source-code-tabs div.tab-content");
+    var id = $navTabs.children().length;
+    $navTabs.append("<li class='nav-item'><a id='navTab_" + id + "' class='nav-link' href='#navContent_" + id + "'>" + sourceCodeItem.fileName + "</a></li>");
+    $navContent.append("<div id='navContent_" + id + "' class='tab-pane fade flex-fill' role='tabpanel' aria-labelledby='navTab_" + id + "'><pre style='margin-bottom: 0;'><code class='line-numbers language-" + sourceCodeItem.language + "'>" + sourceCodeItem.sourceCode + "</code></pre></div>");
+    $("#source-code-tabs ul.nav-tabs li:last-child a").click();
+
+    $navTabs.find("a.nav-link").click(function (e) {
+      e.preventDefault();
+      $(this).tab("show");
+    }).first().click();
+  }
+
+  function loadCategorySummary(categoryName) {
+    let url = "@Html.Raw(Url.Page(null, "CategorySummary", new { categoryName = "CATEGORYNAMEPLACEHODER" }))";
+    url = url.replace("CATEGORYNAMEPLACEHODER", categoryName);
+    $.ajax({
+      url: url,
+      success: function (summaryMarkup) {
+        $summary = $(summaryMarkup);
+        $summary.find("ul").addBack().attr("style", "list-style-type: none;");
+        $("#summary-container").empty().append($summary);
+        $("#summary-container").removeClass("d-none");
+        $("#sample-container").removeClass("d-flex");
+        $("#sample-container").addClass("d-none");
+      },
+      error: function (data) {
+        window.alert("Error loading category summary. ('" + data.responseText + "')");
+      }
+    });
+  }
+
+  $(function () {
+    let iconCaretDown = '<i class="fa-fw fas fa-caret-down"></i>';
+    let iconCaretRight = '<i class="fa-fw fas fa-caret-right"></i>';
+    let iconFolderClosed = '<i class="fa-fw fas fa-folder"></i>';
+    let iconFolderOpen = '<i class="fa-fw fas fa-folder-open"></i>';
+
+    $(".folder-status-icon").click(function () {
+      let $this = $(this);
+      $this.parent().siblings("div.children").toggle();
+      if ($this.closest("li").children("div.children").is(":visible")) {
+        $this.empty().append(iconCaretDown);
+        $this.next().empty().append(iconFolderOpen);
+      }
+      else {
+        $this.empty().append(iconCaretRight);
+        $this.next().empty().append(iconFolderClosed);
+      }
+    });
+
+    $(".link-expand-all").click(function () {
+      $("#samples-tree-container div.children").show();
+      $("#samples-tree-container span.folder-status-icon").empty().append(iconCaretDown);
+      $("#samples-tree-container span.folder-icon").empty().append(iconFolderOpen);
+    });
+
+    $(".link-collapse-all").click(function () {      
+      $("#samples-tree-container div.children").hide();
+      $("#samples-tree-container>ul.samples-tree>li>div.children").show();
+      $("#samples-tree-container span.folder-status-icon").empty().append(iconCaretRight);
+      $("#samples-tree-container span.folder-icon").empty().append(iconFolderClosed);
+    });
+
+    $(".category-link").click(function () {
+      let categoryName = $(this).data("categoryName");
+      loadCategorySummary(categoryName);
+    });
+
+    $(".sample-link").click(function () {
+      let sampleName = $(this).data("sampleName");
+      loadSample(sampleName);
+    });
+
+    $("#button-run-sample-render").click(function () {
+      let url = "@Html.Raw(Url.Page(null, "RunSample", new { sampleName = "SAMPLENAMEPLACEHODER", runSampleType = RunSampleType.RenderImage }))";
+      url = url.replace("SAMPLENAMEPLACEHODER", currentSampleInfo.name);
+      url = appendQueryString(url, "r", performance.now());
+      showPageOverlay("<div class='content loading text-center'><img src='" + url + "' class='scaled50' /></div>");
+    });
+
+    $("#button-run-sample-download").click(function () {
+        if (currentSampleInfo != null) {
+          let url = "@Html.Raw(Url.Page(null, "RunSample", new { sampleName = "SAMPLENAMEPLACEHOLDER", runSampleType = RunSampleType.DownloadFile }))";
+          url = url.replace("SAMPLENAMEPLACEHOLDER", currentSampleInfo.name);
+          let link = document.createElement("a");
+          link.href = url;
+          link.download = "";
+          link.click();
+        }
+    });
+
+    loadCategorySummary("SpreadsheetGear Explorer Samples");
+  });
+</script>
+}
