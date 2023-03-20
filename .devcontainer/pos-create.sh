@@ -1,5 +1,7 @@
 ## Enable local HTTPS for .NET
-dotnet dev-certs https --trust
+## Trust HTTPS certificate on Linux using Edge or Chrome
+dotnet dev-certs https
+sudo -E dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
 
 ## Restore .NET packages and build the default solution
 dotnet restore && dotnet build
