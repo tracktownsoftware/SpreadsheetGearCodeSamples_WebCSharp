@@ -19,9 +19,9 @@
 	// "features": {},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [5000, 5001],
+	"forwardPorts": [5283, 7233],
 	"portsAttributes": {
-			"5001": {
+			"7233": {
 				"protocol": "https"
 			}
 	},
