@@ -6,8 +6,8 @@ These code samples have been tested in [Visual Studio Code (VSCode)](https://cod
 *   **[SpreadsheetGear Engine for .NET](https://www.nuget.org/packages/SpreadsheetGear/9.1.44-beta)** - A Nuget package that is the primary SpreadsheetGear library and provides a core set of APIs to read, write, manipulate and calculate workbooks, build charts, format worksheets and cells, and more. Learn more about SpreadsheetGear products on its [Features Page](https://www.spreadsheetgear.com/Products/Features) and [Comparison Page](https://www.spreadsheetgear.com/Products/Compare).
 
 ## Run code samples in Github Codespaces or a local Docker Dev Container ##
-- [Open a Github Codespace for this repo in a browser based VSCode editor (No install required)](./docs/SampleCodeInVSCode.md#open-a-github-codespace-for-this-repo-in-a-browser-based-vscode-editor-no-install-required)
-- [Open a Github Codespace for this repo in your local VSCode editor (requires the VSCode extension Github Codespaces)](./docs/SampleCodeInVSCode.md#open-a-github-codespace-for-this-repo-in-your-local-vscode-editor-requires-the-vscode-extension-github-codespaces)
+- [Open a Github Codespace for this repo in a browser based VSCode editor (No install required)](./docs/SampleCodeInVSCode.md#open-a-github-codespace-for-this-repo-in-a-browser-based-vscode-editor-no-install-required). This uses [Github Codespaces port forwarding](#github-codespaces-port-forwarding---use-links-in-the-vscode-terminal-window-ports-tab).
+- [Open a Github Codespace for this repo in your local VSCode editor (requires the VSCode extension Github Codespaces)](./docs/SampleCodeInVSCode.md#open-a-github-codespace-for-this-repo-in-your-local-vscode-editor-requires-the-vscode-extension-github-codespaces). This uses [Github Codespaces port forwarding](#github-codespaces-port-forwarding---use-links-in-the-vscode-terminal-window-ports-tab).
 - [Clone this repo and open a local Dev Container in your VSCode editor (requires Docker Desktop and VSCode Dev Containers extension)](./docs/SampleCodeInVSCode.md#clone-this-repo-and-open-a-local-devcontainer-in-your-vscode-editor-requires-docker-desktop-and-vscode-dev-containers-extension)
 
 ## Run code samples in Visual Studio Code with all requirements installed (no Dev Container) ##
@@ -29,6 +29,6 @@ These code samples have been tested in [Visual Studio Code (VSCode)](https://cod
 
 The launchSettings.json file specifies ports https://localhost:7233 and http://localhost:5283. 
 
-However, when running the app in **browser based Visual Studio Code** and Github Codespaces, these ports are forwarded to URL links found in the "Ports" tab in the VSCode Terminal window. You need to use these links rather than the localhost links in launchSettings.json. See image below.
+However, when running the app in the Github Codespace remote Dev Container, these ports are forwarded to URL links found in the "Ports" tab in the VSCode Terminal window. You need to use these links rather than the localhost links in launchSettings.json. See image below.
 
 ![Image](docs/images/VSCodeInBrowserPortForwarding.jpg)
