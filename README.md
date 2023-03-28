@@ -32,6 +32,6 @@ These code samples have been tested in [Visual Studio Code (VSCode)](https://cod
 
 The launchSettings.json file specifies ports https://localhost:7233 and http://localhost:5283. 
 
-However, when running the app in a Github Codespace remote Dev Container, these ports are forwarded to URL links found in the 'PORTS' tab in the VSCode Terminal window. You need to use these links rather than the localhost links in launchSettings.json. See image below.
+However, when running the app in the remote Github Codespace, these ports are forwarded to URL links found in the 'PORTS' tab in the VSCode Terminal window. You need to use these links rather than the localhost links in launchSettings.json. See image below.
 
 ![Image](docs/images/VSCodeInBrowserPortForwarding.jpg)
