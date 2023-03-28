@@ -23,3 +23,12 @@ These code samples have been tested in [Visual Studio Code (VSCode)](https://cod
     - Ignore the "Getting Started with .NET" prompt to "Install .NET SDK". You already installed it in step 1.
 4. Install [Git version control](https://git-scm.com/download)
 5. Clone this repo and open its local folder in VSCode.
+
+
+## GitHub Codespaces Port Forwarding - Use links in the VSCode Terminal window 'PORTS' tab ##
+
+The launchSettings.json file specifies ports https://localhost:7233 and http://localhost:5283. 
+
+However, when running the app in **browser based Visual Studio code** and Github Codespaces, these ports are forwarded to URL links found in the "Ports" tab in the VSCode Terminal window. You need to use these links rather than those in launchSettings.json. See image below.
+
+![Image](docs/images/VSCodeInBrowserPortForwarding.jpg)
