@@ -15,7 +15,7 @@ These code samples have been tested in [Visual Studio Code (VSCode)](https://cod
 
 ## Run code samples in Visual Studio Code with all requirements installed ##
 
-*There is no need to install this list of requirements if using [Github Codespaces or a local Docker Dev Container](#run-code-samples-in-github-codespaces-or-a-local-docker-dev-container).*
+*There is no need to install this list of requirements if using Github Codespaces or a local Docker Dev Container.*
 
 *These instructions are for SpreadsheetGear code samples in an ASP.NET CORE web app and should work for Windows, MacOS and Linux*
 
