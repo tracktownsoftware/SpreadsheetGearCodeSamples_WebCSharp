@@ -7,7 +7,7 @@ These code samples have been tested in [Visual Studio Code (VSCode)](https://cod
 
 ## Run code samples in Github Codespaces ##
 *Please read note about [Github Codespaces Port Forwarding](#github-codespaces-port-forwarding---use-links-in-the-vscode-terminal-window-ports-tab)*
-- [Open a Github Codespace for this repo in a browser based VSCode editor (No install required)](./docs/SampleCodeInVSCode.md#open-a-github-codespace-for-this-repo-in-a-browser-based-vscode-editor-no-install-required). Please read note about [Github Codespaces Port Forwarding](#github-codespaces-port-forwarding---use-links-in-the-vscode-terminal-window-ports-tab).
+- [Open a Github Codespace for this repo in a browser based VSCode editor (No install required)](./docs/SampleCodeInVSCode.md#open-a-github-codespace-for-this-repo-in-a-browser-based-vscode-editor-no-install-required).
 - [Open a Github Codespace for this repo in your local VSCode editor (requires the VSCode extension Github Codespaces)](./docs/SampleCodeInVSCode.md#open-a-github-codespace-for-this-repo-in-your-local-vscode-editor-only-requires-the-vscode-extension-github-codespaces).
 
 ## Run code samples in a local Docker Dev Container ##
