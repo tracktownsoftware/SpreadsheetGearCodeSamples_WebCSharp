@@ -1,5 +1,4 @@
-# SpreadsheetGear C# code samples in an ASP.NET Core web app #
-Microsoft uses the name Polygot Notebooks. Previously Microsoft called them .NET Interactve Notebooks
+# SpreadsheetGear C# code samples in an ASP.NET CORE web app #
 
 These code samples have been tested in [Visual Studio Code (VSCode)](https://code.visualstudio.com/) for Windows, Linux and MacOS.
 
@@ -15,7 +14,7 @@ These code samples have been tested in [Visual Studio Code (VSCode)](https://cod
 
 *There is no need to install this list of requirements if using [Github Codespaces or a local Docker Dev Container](#run-code-samples-in-github-codespaces-or-a-local-docker-dev-container).*
 
-*These instructions are for SpreadsheetGear code samples for C# in Jupyter Notebooks and should work for Windows, MacOS and Linux*
+*These instructions are for SpreadsheetGear code samples in an ASP.NET CORE web app and should work for Windows, MacOS and Linux*
 
 1. From [Download .NET](https://dotnet.microsoft.com/en-us/download)
     - Install the .NET 7.0 SDK - *Required for .NET Extension Pack for Visual Studio Code. SpreadsheetGear works with .NET SDK version 6.0 and later*
